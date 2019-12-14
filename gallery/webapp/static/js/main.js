@@ -5,14 +5,12 @@ function addComment(photo_pk) {
         url: 'http://localhost:8000/api/comments/',
         method: 'POST',
         headers: {'X-CSRFToken': csrftoken},
-        data: JSON.stringify({"text": comment, 'photo': photo_pk, 'author': user_id}),
+        data: JSON.stringify({"text": comment, 'photo': photo_pk}),
         contentType: 'application/json',
         dataType: 'json',
         success: function (response, status) {
-            console.log(response)
-            comments = $('#comments')
-
-            const comment = `<div class="card mb-2">
+            const comments = $('#comments')
+            const comment = `<div class="card mb-2" id="comment_${response.id}">
                 <div class="card-header text-danger">
                     Комментрий от ${response.author}
                 </div>
@@ -23,9 +21,29 @@ function addComment(photo_pk) {
                             добавления: ${response.create_at}</footer>
                     </blockquote>
                 </div>
+                <button class="btn btn-danger" onclick="deleteComment(${response.id})" id="deleteComment">Удалить комментарий</button>
             </div>`
 
             comments.append(comment)
+        },
+        error: function (response, status) {
+            console.log(response)
+        }
+    })
+}
+
+function deleteComment(id) {
+    const csrftoken = getCookie('csrftoken')
+    $.ajax({
+        url: `http://localhost:8000/api/comments/${id}/`,
+        method: 'DELETE',
+        headers: {'X-CSRFToken': csrftoken},
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response, status) {
+            const deleted_comment = $(`#comment_${id}`)
+            console.log(deleted_comment)
+            deleted_comment.remove()
         },
         error: function (response, status) {
             console.log(response)

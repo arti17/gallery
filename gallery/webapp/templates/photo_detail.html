@@ -32,7 +32,7 @@
     <div class="mt-5" id="comments">
         <h3>Комментарии:</h3>
         {% for comment in photo.photo_comments.all %}
-            <div class="card mb-2">
+            <div class="card mb-2" id="comment_{{ comment.pk }}">
                 <div class="card-header text-danger">
                     Комментрий от {{ comment.author }}
                 </div>
@@ -43,6 +43,10 @@
                             добавления: {{ comment.create_at|date:'Y-m-d H:i:s' }}</footer>
                     </blockquote>
                 </div>
+                {% if request.user.id == comment.author.id or perms.webapp.delete_comment %}
+                    <button class="btn btn-danger" onclick="deleteComment({{ comment.pk }})" id="deleteComment">Удалить комментарий</button>
+                {% endif %}
+
             </div>
 
         {% empty %}
