@@ -62,6 +62,8 @@ function like(photo_pk) {
         success: function (response, status) {
             const like_btn = $(`#like_${photo_pk}`)
             const dizlike_btn = $(`#dizlike_${photo_pk}`)
+            const likes = $(`#likes_${photo_pk}`)
+            likes.text(response.rating)
             like_btn.addClass('d-none')
             dizlike_btn.removeClass('d-none')
 
@@ -83,6 +85,8 @@ function dizlike(photo_pk) {
         success: function (response, status) {
             const like_btn = $(`#like_${photo_pk}`)
             const dizlike_btn = $(`#dizlike_${photo_pk}`)
+            const likes = $(`#likes_${photo_pk}`)
+            likes.text(response.rating)
             like_btn.removeClass('d-none')
             dizlike_btn.addClass('d-none')
         },

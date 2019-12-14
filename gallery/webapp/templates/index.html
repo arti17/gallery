@@ -10,7 +10,7 @@
             <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ photo.note }}">
             <div class="card-body">
                 <h5 class="card-title">{{ photo.note }}</h5>
-                <p class="card-text">Рейтинг: {{ photo.likes }}</p>
+                <p class="card-text">Рейтинг: <span id="likes_{{ photo.id }}">{{ photo.likes }}</span></p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><small
