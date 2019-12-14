@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -20,7 +21,7 @@ class PhotoDetail(DetailView):
     context_object_name = 'photo'
 
 
-class PhotoCreateView(CreateView):
+class PhotoCreateView(LoginRequiredMixin, CreateView):
     template_name = 'photo_create.html'
     model = Photo
     form_class = PhotoForm
@@ -35,20 +36,30 @@ class PhotoCreateView(CreateView):
         return reverse('webapp:index')
 
 
-class PhotoUpdateView(UpdateView):
+class PhotoUpdateView(UserPassesTestMixin, UpdateView):
     model = Photo
     class_form = PhotoForm
     template_name = 'photo_update.html'
     context_object_name = 'photo'
     fields = ['photo', 'note']
 
+    def test_func(self):
+        photo_pk = self.kwargs.get('pk')
+        photo = Photo.objects.get(pk=photo_pk)
+        return self.request.user == photo.author or self.request.user.has_perm('webapp.change_photo')
+
     def get_success_url(self):
         return reverse('webapp:index')
 
 
-class PhotoDeleteView(DeleteView):
+class PhotoDeleteView(UserPassesTestMixin, DeleteView):
     model = Photo
     success_url = reverse_lazy('webapp:index')
+
+    def test_func(self):
+        photo_pk = self.kwargs.get('pk')
+        photo = Photo.objects.get(pk=photo_pk)
+        return self.request.user == photo.author or self.request.user.has_perm('webapp.delete_photo')
 
 
 def login_view(request):

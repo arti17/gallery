@@ -22,11 +22,13 @@
             </ul>
             <div class="card-body">
                 <a href="{% url 'webapp:photo_detail' photo.pk %}" class="btn btn-success">Просмотр</a>
-                <a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Редактировать</a>
-                <form action="{% url 'webapp:photo_delete' photo.pk %}" method="post" class="d-inline-block">
-                    {% csrf_token %}
-                    <input type="submit" value="Удалить" class="btn btn-danger">
-                </form>
+                {% if perms.webapp.change_photo or request.user.id == photo.author.id %}
+                    <a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Редактировать</a>
+                    <form action="{% url 'webapp:photo_delete' photo.pk %}" method="post" class="d-inline-block">
+                        {% csrf_token %}
+                        <input type="submit" value="Удалить" class="btn btn-danger">
+                    </form>
+                {% endif %}
             </div>
         </div>
     {% endfor %}
