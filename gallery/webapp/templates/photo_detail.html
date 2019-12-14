@@ -19,25 +19,37 @@
         </div>
     </div>
 
-    <div>
-        <h3>Комментарии:</h3>
+    {% if user.is_authenticated %}
+        <h3>Добавить комментарий</h3>
+        <div class="form-group col-8 d-inline-block">
+            <label for="commentText">Комментарий</label>
+            <input type="text" class="form-control" id="commentText" placeholder="Текст комментария">
+        </div>
+        <button type="button" class="btn btn-success col-2" onclick="addComment({{ photo.pk }})">Добавить</button>
+    {% endif %}
 
+
+    <div class="mt-5" id="comments">
+        <h3>Комментарии:</h3>
         {% for comment in photo.photo_comments.all %}
-            <div class="card">
-                <div class="card-header">
+            <div class="card mb-2">
+                <div class="card-header text-danger">
                     Комментрий от {{ comment.author }}
                 </div>
                 <div class="card-body">
                     <blockquote class="blockquote mb-0">
                         <p>{{ comment.text }}</p>
-                        <footer class="blockquote-footer">Дата добавления: {{ comment.create_at|date:'d.m.Y H:i:s' }}</footer>
+                        <footer class="blockquote-footer">Дата
+                            добавления: {{ comment.create_at|date:'Y-m-d H:i:s' }}</footer>
                     </blockquote>
                 </div>
             </div>
 
-            {% empty %}
+        {% empty %}
             <p>Нет комментариев</p>
         {% endfor %}
-
     </div>
+
+
+
 {% endblock %}
