@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактировать фото{% endblock %}
+
+{% block body %}
+    <h1 class="text-center mb-5">Редактировать фото</h1>
+    <form action="" method="post" enctype="multipart/form-data">
+        {% include 'partial/form.html' with button_text='Обновить' %}
+    </form>
+{% endblock %}

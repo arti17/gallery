@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Главная
+{% endblock %}
+
+{% block body %}
+    {% for photo in photos %}
+        <div class="card col-6 mb-5">
+            <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ photo.note }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ photo.note }}</h5>
+                <p class="card-text">...</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><small
+                        class="text-muted">Добавлено пользователем {{ photo.author }}</small>
+                </li>
+                <li class="list-group-item"><small
+                        class="text-muted">Дата добавления: {{ photo.create_at|date:'d.m.Y H:i:s' }}</small>
+                </li>
+            </ul>
+            <div class="card-body">
+                <a href="{% url 'webapp:photo_detail' photo.pk %}" class="btn btn-success">Просмотр</a>
+                <a href="{% url 'webapp:photo_update' photo.pk %}" class="btn btn-primary">Редактировать</a>
+                <form action="{% url 'webapp:photo_delete' photo.pk %}" method="post" class="d-inline-block">
+                    {% csrf_token %}
+                    <input type="submit" value="Удалить" class="btn btn-danger">
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

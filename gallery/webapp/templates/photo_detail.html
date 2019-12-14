@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ photo.note }}
+{% endblock %}
+
+{% block body %}
+    <div class="card col-6 mb-5">
+        <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ photo.note }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ photo.note }}</h5>
+            <p class="card-text">...</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><small
+                    class="text-muted">Добавлено: {{ photo.create_at|date:'d.m.Y H:i:s' }}</small></li>
+        </ul>
+        <div class="card-body">
+        </div>
+    </div>
+
+    <div>
+        <h3>Комментарии:</h3>
+
+        {% for comment in photo.photo_comments.all %}
+            <div class="card">
+                <div class="card-header">
+                    Комментрий от {{ comment.author }}
+                </div>
+                <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                        <p>{{ comment.text }}</p>
+                        <footer class="blockquote-footer">Дата добавления: {{ comment.create_at|date:'d.m.Y H:i:s' }}</footer>
+                    </blockquote>
+                </div>
+            </div>
+
+            {% empty %}
+            <p>Нет комментариев</p>
+        {% endfor %}
+
+    </div>
+{% endblock %}
