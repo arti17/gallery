@@ -51,6 +51,47 @@ function deleteComment(id) {
     })
 }
 
+function like(photo_pk) {
+    const csrftoken = getCookie('csrftoken')
+    $.ajax({
+        url: `http://localhost:8000/api/like/${photo_pk}/`,
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response, status) {
+            const like_btn = $(`#like_${photo_pk}`)
+            const dizlike_btn = $(`#dizlike_${photo_pk}`)
+            like_btn.addClass('d-none')
+            dizlike_btn.removeClass('d-none')
+
+        },
+        error: function (response, status) {
+            console.log(response)
+        }
+    })
+}
+
+function dizlike(photo_pk) {
+    const csrftoken = getCookie('csrftoken')
+    $.ajax({
+        url: `http://localhost:8000/api/dizlike/${photo_pk}/`,
+        method: 'POST',
+        headers: {'X-CSRFToken': csrftoken},
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function (response, status) {
+            const like_btn = $(`#like_${photo_pk}`)
+            const dizlike_btn = $(`#dizlike_${photo_pk}`)
+            like_btn.removeClass('d-none')
+            dizlike_btn.addClass('d-none')
+        },
+        error: function (response, status) {
+            console.log(response)
+        }
+    })
+}
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {

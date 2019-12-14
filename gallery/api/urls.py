@@ -9,4 +9,6 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('like/<int:pk>/', views.LikeView.as_view(), name='like'),
+    path('dizlike/<int:pk>/', views.DizlikeView.as_view(), name='dizlike'),
 ]

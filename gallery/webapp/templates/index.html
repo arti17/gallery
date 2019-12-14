@@ -10,7 +10,7 @@
             <img src="{{ photo.photo.url }}" class="card-img-top" alt="{{ photo.note }}">
             <div class="card-body">
                 <h5 class="card-title">{{ photo.note }}</h5>
-                <p class="card-text">...</p>
+                <p class="card-text">Рейтинг: {{ photo.likes }}</p>
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item"><small
@@ -28,6 +28,10 @@
                         {% csrf_token %}
                         <input type="submit" value="Удалить" class="btn btn-danger">
                     </form>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <button class="btn btn-info" onclick="like({{ photo.pk }})" id="like_{{ photo.pk }}">Лайк</button>
+                    <button class="btn btn-info" onclick="dizlike({{ photo.pk }})" id="dizlike_{{ photo.pk }}">Дизлайк</button>
                 {% endif %}
             </div>
         </div>
